@@ -9,6 +9,28 @@ docker run --rm -p 8010:8010 tufferina
 ```
 
 
+# Deploying to AWS
+
+1. Ensure AWS CLI is installed
+2. [Link docker to Amazon ECR repository](https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html)
+```
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 919994557194.dkr.ecr.us-east-2.amazonaws.com/tufferina
+```
+
+```
+docker images
+docker tag tufferina 919994557194.dkr.ecr.us-east-2.amazonaws.com/tufferina
+docker push 919994557194.dkr.ecr.us-east-2.amazonaws.com/tufferina
+```
+
+
+
+
+
+
+
+# Previous docker notes
+
 ```
 tufferina>docker run -it --rm -p 8010:8010 -v $PWD/src:/go/src/tufferina tufferina
 ```

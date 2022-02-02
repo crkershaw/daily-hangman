@@ -12,7 +12,7 @@ func main() {
 	router.LoadHTMLGlob("templates/*")
 	router.GET("/", homepage)
 
-	router.Run(":8010")
+	router.Run(":80")
 
 	log.Fatal(router.Run())
 }

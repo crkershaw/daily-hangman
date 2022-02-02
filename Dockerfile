@@ -21,6 +21,6 @@ COPY templates/ /app/templates
 
 WORKDIR /app
 
-EXPOSE 8010
+EXPOSE 80
 
 CMD ["./tufferina"]
