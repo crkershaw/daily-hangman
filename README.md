@@ -5,8 +5,22 @@
 ```
 docker build -t tufferina .
 
-docker run --rm -p 8010:8010 tufferina
+docker run --rm -p 80:80 tufferina
 ```
+
+# AWS
+
+## Internet Gateway
+tufferina-ig # Attached to tufferina VPC
+
+## VPC
+Tufferina
+
+## Security groups
+tufferina-sg-eb
+tufferina-sg-lb
+
+
 
 
 # Deploying to AWS
