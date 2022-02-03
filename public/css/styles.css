@@ -1,8 +1,54 @@
-/* CSS File */
+html,
+body,
+header,
+footer,
 
-*{
+
+* {
     font-family: "Open sans", Helvetica, Arial, sans-serif;
 }
 
+.background {
+    background-color:rgb(230, 105, 182);
+}
+
+.keyboard {
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.keyRow {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.key {
+    margin-left: 2px;
+    margin-right: 2px;
+
+    padding-left:5px;
+    padding-right: 5px;
+    padding-top:5px;
+    padding-bottom:5px;
+
+    border-radius: 5px;
+    border-width: 0px;
+
+    width: 1.5em;
+}
 
 
+.key.clicked {
+    background-color:rgb(100,102,103);
+    color: white;
+}
+
+.key.unclicked {
+    background-color: white;
+    color: darkgrey;
+    
+}

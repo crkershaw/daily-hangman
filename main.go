@@ -16,6 +16,7 @@ func main() {
 	router.LoadHTMLGlob("templates/*")
 
 	router.GET("/", homepage)
+	router.GET("/hangman", hangman)
 
 	router.Run(":80")
 
@@ -24,5 +25,8 @@ func main() {
 
 func homepage(c *gin.Context) {
 	c.HTML(http.StatusOK, "homepage.html", []string{})
+}
 
+func hangman(c *gin.Context) {
+	c.HTML(http.StatusOK, "hangman.html", []string{})
 }
