@@ -1,6 +1,10 @@
 # tufferina
 
+# Running normally
 
+
+
+# Running on docker
 
 ```
 docker build -t tufferina .
@@ -16,12 +20,35 @@ tufferina-ig # Attached to tufferina VPC
 ## VPC
 Tufferina
 
+# Route tables
+tufferina-rt-public (routes to 10.1.0.0/16 - local, and 0.0.0.0/0 - internet gateway)
+
+
+# Subnets (tied to VPC and route table)
+tufferina-subnet-public-2b (linked to tufferina-rt-public)
+Xtufferina-subnet-public-2c (linked to tufferina-rt-public)
+Xtufferina-subnet-private-2c (routes to 10.1.0.0/16 - local, and 0.0.0.0/0 - nat-pub1)
+
+# NAT gateways (tied to subnets)
+Xtufferina-nat-pub1 (tied to tufferina-subnet-public-2c)
+Xtufferina-nat-pub2 (tied to tufferina-subnet-public-2b)
+tufferina-nat-pub (tied to tufferina-subnet-public-2b)
+
 ## Security groups
 tufferina-sg-eb
 tufferina-sg-lb
 
+# Load balancer
+Xtufferina-lb (mapped to subnet-public-2b and subnet-public-2c, security group tufferina-sg-lb, listeners http 80 and forwards to tufferina-tg-http)
 
+# Target group
+tufferina-tg-http (http port 80, associated with tufferina-lb)
 
+# Instance
+Linux
+Tufferina VPC
+subnet-public-2b
+Default vpc security group
 
 # Deploying to AWS
 

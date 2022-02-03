@@ -9,7 +9,12 @@ import (
 
 func main() {
 	router := gin.Default()
+	router.Static("/public/css", "./public/css")
+	router.Static("/public/images", "./public/images")
+	router.Static("/public/js", "./public/js")
+
 	router.LoadHTMLGlob("templates/*")
+
 	router.GET("/", homepage)
 
 	router.Run(":80")

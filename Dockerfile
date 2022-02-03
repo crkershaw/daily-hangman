@@ -18,6 +18,7 @@ COPY --from=0 /build/tufferina /app/
 
 # Now we copy the templates folder too
 COPY templates/ /app/templates
+COPY public/ /app/public
 
 WORKDIR /app
 
