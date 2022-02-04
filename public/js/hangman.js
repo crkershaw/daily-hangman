@@ -13,12 +13,21 @@ class Hangman extends React.Component{
             answer_length: null,
             answer_letters: {},
             guessed_letters: [],
-            complete: false
+            complete: false,
+            nextwordtime: null
         }
     }
 
     componentDidMount(){
         this.api_lengthcheck();
+        this.api_nextword(); // This theoretically could give the wrong time if they load it and complete on different days, but very edge case
+    }
+
+    api_nextword = () => {
+        return fetch("/hangman/api/nextwrdtime")
+            .then(response => response.json())
+            .then(data => this.setState({nextwordtime: data}))
+            .catch(error => console.log(error))
     }
 
     api_lengthcheck = () => {
@@ -32,8 +41,6 @@ class Hangman extends React.Component{
         return fetch("/hangman/api/ltrchk/abc123?letter=" + letter)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
-
                 // Adding letter to list of guessed letters
                 this.setState(prevState => ({guessed_letters: [...prevState.guessed_letters, letter]}))
 
@@ -69,12 +76,11 @@ class Hangman extends React.Component{
             [
                 e(HgmnWord, {answer_length: this.state.answer_length, answer_letters: this.state.answer_letters }),
                 e(KeyBoard, {guessed_letters: this.state.guessed_letters, onHandleClick: this.api_lettercheck }), // Sending function down to keyboard
-                e(Finish, {complete: this.state.complete, onHandleClick: this.reset_hangman})
+                e(Finish, {complete: this.state.complete, guessed_letters: this.state.guessed_letters, nextwordtime: this.state.nextwordtime, onHandleClick: this.reset_hangman})
             ]
         )
     }
 }
-
 
 
 const hangman = document.querySelector('#hangman');
