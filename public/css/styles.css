@@ -99,3 +99,17 @@ footer,
     background-color:rgb(221, 244, 255);
     color: black;
 }
+
+
+/* Finish */
+
+.finishbox {
+    /* background-color: white; */
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.finishbox.hidden {
+    display: none;
+}

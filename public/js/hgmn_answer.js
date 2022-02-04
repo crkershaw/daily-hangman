@@ -10,7 +10,6 @@ class HgmnLetter extends React.Component {
 
     render(){
         
-        console.log(this.props.answered)
         let letter_class = this.props.answered ? "letter answered" : "letter unanswered";
 
         return e(

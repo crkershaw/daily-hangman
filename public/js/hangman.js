@@ -28,12 +28,18 @@ class Hangman extends React.Component{
 
         // Combine that object with the existing state object (note: can't change state in-place)
         const answer_letters_new = {...this.state.answer_letters, ...answer_letters_toadd}
-        this.setState({answer_letters: answer_letters_new})
+        this.setState(
+            {answer_letters: answer_letters_new},
+            function() { // Callback function so it ensures state is updated before running
+                if(Object.keys(this.state.answer_letters).length == this.state.answer_length){
+                    this.setState({complete: true})
+                }
+            })
 
-        if(Object.keys(this.state.answer_letters).length == this.state.answer_length){
-            this.setState({complete: true})
-            console.log("Complete - well done!")
-        }
+    }
+
+    reset_hangman = () => {
+        this.setState({answer_length: api_lengthcheck(), answer_letters: {}, guessed_letters: [], complete: false})
     }
 
     render(){
@@ -43,7 +49,8 @@ class Hangman extends React.Component{
             {className: "hangman"},
             [
                 e(HgmnWord, {answer_length: this.state.answer_length, answer_letters: this.state.answer_letters }),
-                e(KeyBoard, {guessed_letters: this.state.guessed_letters, onHandleClick: this.check_letter }) // Sending function down to keyboard
+                e(KeyBoard, {guessed_letters: this.state.guessed_letters, onHandleClick: this.check_letter }), // Sending function down to keyboard
+                e(Finish, {complete: this.state.complete, onHandleClick: this.reset_hangman})
             ]
         )
     }
