@@ -7,12 +7,13 @@ class KeyButton extends React.Component {
     constructor(props){
         super(props);
         this.state= {clicked: false};
-        this.changeClicked = this.changeClicked.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        
     };
 
-    changeClicked(){
+    handleClick(){
         this.setState({clicked: !this.state.clicked})
-
+        this.props.onHandleClick(this.props.letter) // Sends action up to KeyRow
     };
 
     render() {
@@ -21,7 +22,7 @@ class KeyButton extends React.Component {
         // React.createElement(component, props, ...children)
         return e(
             "button", 
-            { onClick: this.changeClicked, className: btn_class }, 
+            { onClick: this.handleClick, className: btn_class }, 
             this.props.letter
         );
     }
@@ -32,13 +33,26 @@ class KeyRow extends React.Component {
 
     constructor(props){
         super(props);
+
+        this.handleClick = this.handleClick.bind(this)
     }
 
+    handleClick = (letter) => {
+        this.props.onHandleClick(letter) // Sends action up pto Keyboard
+    }
+
+
     render() {
+        var rowkeys = []
+
+        for(let i = 0; i<this.props.keys.length; i++){
+            rowkeys.push(e(KeyButton, {letter: this.props.keys[i], onHandleClick: this.handleClick}))
+        }
+
         return e(
             "div",
             {className: "keyrow"},
-            this.props.rowkeys
+            rowkeys
         )
     }
 }
@@ -49,42 +63,24 @@ class KeyBoard extends React.Component {
         super(props);
     }
 
+    handleClick = (letter) => {
+        this.props.onHandleClick(letter) // Sends action up to hangman
+    }
+
     render() {
+
+        var row1_keys = ["Q","W","E","R","T","Y","U","I","O","P"]
+        var row2_keys = ["A","S","D","F","G","H","J","K","L"]
+        var row3_keys = ["Z","X","C","V","B","N","M"]        
+
         return e(
             "div",
             {className: "keyboard"},
-            allrows
+            [
+                e(KeyRow, {keys: row1_keys, onHandleClick: this.handleClick}),
+                e(KeyRow, {keys: row2_keys, onHandleClick: this.handleClick}),
+                e(KeyRow, {keys: row3_keys, onHandleClick: this.handleClick})
+            ]
         )
     }
 }
-
-
-var row1_keys = ["Q","W","E","R","T","Y","U","I","O","P"]
-var row2_keys = ["A","S","D","F","G","H","J","K","L"]
-var row3_keys = ["Z","X","C","V","B","N","M"]
-
-var row1 = []
-var row2 = []
-var row3 = []
-
-for(let i = 0; i<row1_keys.length; i++){
-    row1.push(e(KeyButton, {letter: row1_keys[i]}))
-}
-
-for(let i = 0; i<row2_keys.length; i++){
-    row2.push(e(KeyButton, {letter: row2_keys[i]}))
-}
-
-for(let i = 0; i<row3_keys.length; i++){
-    row3.push(e(KeyButton, {letter: row3_keys[i]}))
-}
-
-var allrows = [
-    e(KeyRow, {rowkeys: row1}),
-    e(KeyRow, {rowkeys: row2}),
-    e(KeyRow, {rowkeys: row3})
-]
-
-
-const keyboard = document.querySelector('#keyboard');
-ReactDOM.render(e(KeyBoard), keyboard);

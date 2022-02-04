@@ -8,9 +8,13 @@ footer,
     font-family: "Open sans", Helvetica, Arial, sans-serif;
 }
 
+/* Whole site */
+
 .background {
     background-color:rgb(230, 105, 182);
 }
+
+/* Keyboard */
 
 .keyboard {
 
@@ -51,4 +55,47 @@ footer,
     background-color: white;
     color: darkgrey;
     
+}
+
+
+/* Words */
+
+.word {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    width: 100%;
+}
+
+
+.letter {
+    margin-left: 2px;
+    margin-right: 2px;
+
+    padding-left:5px;
+    padding-right: 5px;
+    padding-top:1px;
+    padding-bottom:1px;
+
+    border-radius: 5px;
+    border-width: 0px;
+
+    width: 1.75em;
+    line-height: 2.5em;
+    min-height: 2.5em;
+}
+
+.letter.answered {
+    background-color:rgb(24, 141, 0);
+    color: white;
+}
+
+.letter.unanswered {
+    background-color:rgb(221, 244, 255);
+    color: black;
 }
