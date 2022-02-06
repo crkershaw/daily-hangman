@@ -19,8 +19,7 @@ func main() {
 
 	router.LoadHTMLGlob("templates/*")
 
-	router.GET("/", homepage)
-	router.GET("/hangman", hangman)
+	router.GET("/", hangman)
 	router.GET("/hangman/api/nextwrdtime", hangman_api_nextword)
 	router.GET("/hangman/api/wrdlen/:id", hangman_api_lengthcheck)
 	router.GET("/hangman/api/ltrchk/:id", hangman_api_lettercheck)
