@@ -11,7 +11,7 @@ if(window.location.pathname == "/"){
 var e = React.createElement;
 
 class Hangman extends React.Component{
-
+ 
     constructor(props){
         super(props)
         this.state={

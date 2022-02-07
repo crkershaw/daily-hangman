@@ -42,9 +42,16 @@ func hangman(c *gin.Context) {
 	c.HTML(http.StatusOK, "hangman.html", []string{})
 }
 
-// Returns all words for chosen ID
+// Returns all words for chosen ID from csv file
 func hangman_getwords(wordlist_id string) map[string]map[string]string {
-	records := readCsvFile("wordlist/wordlist_custom.csv")
+
+	var records [][]string
+
+	if config_source == "s3" {
+		records = readCsvFile("s3", "https://hangman-s3.s3.amazonaws.com/wordlist_custom.csv")
+	} else {
+		records = readCsvFile("local", "wordlist/wordlist_custom.csv")
+	}
 
 	header := []string{} // holds first row - header
 	// body := []map[string]string{}
@@ -87,9 +94,11 @@ func hangman_getwords(wordlist_id string) map[string]map[string]string {
 // Returns chosen word and message for given wordlist and day number
 func hangman_getwordmessage(wordlist_id string, day int) (string, string) {
 
-	wordlist := wordlists["default"]
+	var wordlist map[string]map[string]string
 
-	if config_source == "csv" {
+	if config_source == "hardcoded" {
+		wordlist = wordlists["default"]
+	} else if config_source == "csv" || config_source == "s3" {
 		wordlist = hangman_getwords(wordlist_id)
 	}
 
@@ -165,15 +174,31 @@ func hangman_dayword(date time.Time) int {
 	return int(math.Floor(days_between_dates))
 }
 
-func readCsvFile(filePath string) [][]string {
-	f, err := os.Open(filePath)
-	if err != nil {
-		log.Fatal("Unable to read input file "+filePath, err)
+func readCsvFile(source string, filePath string) [][]string {
+
+	var csvReader *csv.Reader
+
+	if source == "local" {
+		f, err := os.Open(filePath)
+
+		if err != nil {
+			log.Fatal("Unable to read input file "+filePath, err)
+		}
+
+		defer f.Close()
+		csvReader = csv.NewReader(f)
+	} else {
+		f, err := http.Get("https://hangman-s3.s3.amazonaws.com/wordlist_custom.csv")
+
+		if err != nil {
+			log.Fatal("Unable to read input file "+filePath, err)
+		}
+
+		defer f.Body.Close()
+		csvReader = csv.NewReader(f.Body)
 	}
 
-	defer f.Close()
-
-	csvReader := csv.NewReader(f)
+	// var records [][]string
 	records, err := csvReader.ReadAll()
 	if err != nil {
 		log.Fatal("Unable to parse file as CSV for "+filePath, err)
@@ -228,5 +253,5 @@ var wordlists = map[string]map[string]map[string]string{
 	"default": words_default,
 }
 
-var config_sources = [2]string{"csv", "hardcoded"}
-var config_source string = config_sources[0]
+var config_sources = [3]string{"csv", "hardcoded", "s3"}
+var config_source string = config_sources[2]
