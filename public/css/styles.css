@@ -14,6 +14,11 @@ footer,
     background-color:rgb(230, 105, 182);
 }
 
+.fontsize-dynamic {
+    font-size: 5vw;
+}
+
+
 /* Keyboard */
 
 .keyboard {

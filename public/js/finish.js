@@ -42,7 +42,10 @@ class Finish extends React.Component {
         return e(
             "div",
             {className: finishbox_class, onClick: this.handleClick},
-            "You did it in " + attempts.toString() + " guesses! Next word available " + time_to_next
+            [
+                e("p", {}, this.props.message),
+                e("p", {}, "You did it in " + attempts.toString() + " guesses! Next word available " + time_to_next)
+            ]
         )
     }
 }
