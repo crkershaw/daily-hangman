@@ -1,16 +1,8 @@
-module github.com/crkershaw/hangman
+module github.com/crkershaw/hangman/controllers/hangman
 
 go 1.17
 
-replace github.com/crkershaw/hangman/controllers/hangman => /controllers/hangman
-
-replace github.com/crkershaw/hangman/configs => /configs
-
-require (
-	github.com/crkershaw/hangman/configs v0.0.0-00010101000000-000000000000
-	github.com/crkershaw/hangman/controllers/hangman v0.0.0-00010101000000-000000000000
-	github.com/gin-gonic/gin v1.7.7
-)
+require github.com/gin-gonic/gin v1.7.7
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect

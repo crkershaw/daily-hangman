@@ -14,7 +14,7 @@ RUN adduser -S -D -H -h /app appuser
 USER appuser
 
 # Now we copy that go executable into our new image /app folder 
-COPY --from=0 /build/tufferina /app/
+COPY --from=0 /build/hangman /app/
 
 # Now we copy the templates folder too
 COPY templates/ /app/templates
@@ -25,4 +25,4 @@ WORKDIR /app
 ENV PORT 80
 EXPOSE 80
 
-CMD ["./tufferina"]
+CMD ["./hangman"]
