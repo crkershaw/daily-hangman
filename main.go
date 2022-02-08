@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/csv"
 	"fmt"
 	"log"
@@ -14,7 +15,36 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
+}
+
 func main() {
+
+	// Adding S3 bucket to environment variables
+	// Note S3 bucket url is not added to Github - if using with your own data, change config_source config variable beloq
+	if config_source == "s3" && fileExists("env-vars.txt") {
+		file, err := os.Open("env-vars.txt")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer file.Close()
+
+		scanner := bufio.NewScanner(file)
+
+		for scanner.Scan() {
+			os.Setenv("s3-file-url", scanner.Text())
+		}
+
+		if err := scanner.Err(); err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	router := gin.Default()
 	router.Static("/public/css", "./public/css")
 	router.Static("/public/images", "./public/images")
@@ -23,7 +53,7 @@ func main() {
 	router.LoadHTMLGlob("templates/*")
 
 	router.GET("/", hangman)
-	router.GET("/custom/:id", hangman)
+	router.GET("/c/:id", hangman)
 	router.GET("/hangman/api/nextwrdtime", hangman_api_nextword)
 	router.GET("/hangman/api/wrdlen/:id", hangman_api_lengthcheck)
 	router.GET("/hangman/api/ltrchk/:id", hangman_api_lettercheck)
@@ -48,7 +78,7 @@ func hangman_getwords(wordlist_id string) map[string]map[string]string {
 	var records [][]string
 
 	if config_source == "s3" {
-		records = readCsvFile("s3", "https://hangman-s3.s3.amazonaws.com/wordlist_custom.csv")
+		records = readCsvFile("s3", os.Getenv("s3-file-url"))
 	} else {
 		records = readCsvFile("local", "wordlist/wordlist_custom.csv")
 	}
@@ -188,7 +218,7 @@ func readCsvFile(source string, filePath string) [][]string {
 		defer f.Close()
 		csvReader = csv.NewReader(f)
 	} else {
-		f, err := http.Get("https://hangman-s3.s3.amazonaws.com/wordlist_custom.csv")
+		f, err := http.Get(filePath)
 
 		if err != nil {
 			log.Fatal("Unable to read input file "+filePath, err)

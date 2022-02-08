@@ -5,7 +5,7 @@ var id = "";
 if(window.location.pathname == "/"){
     id = "default"
 } else {
-    id = window.location.pathname.replace("/custom/", "")
+    id = window.location.pathname.replace("/c/", "")
 }
 
 var e = React.createElement;
