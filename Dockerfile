@@ -2,9 +2,36 @@
 FROM golang:1.14.9-alpine
 
 RUN mkdir /build
-ADD go.mod go.sum main.go /build/
+
+ADD /configs/ /build/configs
+# WORKDIR /build/configs
+# RUN go get -v -t .
+# RUN go build
+
+ADD /controllers /build/controllers
+# WORKDIR /build/controllers/hangman
+# RUN go get -v -t .
+# RUN go build
+
+ADD go.mod go.sum main.go /build/ 
 WORKDIR /build
+# RUN go get -v -t .
 RUN go build
+# WORKDIR /build/configs
+# RUN go get -v -t .
+# RUN go build
+
+
+
+# WORKDIR /build
+# RUN go get -v -t .
+
+# WORKDIR /build/controllers/hangman]
+# RUN go get -v -t .
+
+# WORKDIR /build
+# RUN go get -v -t .
+# RUN go build
 
 # We now have a go executable in the /build folder
 
