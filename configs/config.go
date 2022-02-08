@@ -12,8 +12,11 @@ import (
 var ConfigSources = [3]string{"csv", "hardcoded", "s3"}
 var ConfigSource string = ConfigSources[2]
 
-// var TodayDate = time.Date(2022, time.Month(2), 5, 5, 0, 0, 0, time.UTC)
+// Dates: BaseDate is the date the word of day number '0' appears on
+// So if it is two days after the BaseDate, the user will be shown word '2'
 var BaseDate = time.Date(2022, time.Month(2), 4, 0, 0, 0, 0, time.UTC)
+
+// var TodayDate = time.Date(2022, time.Month(2), 5, 5, 0, 0, 0, time.UTC)
 
 // Hardcoded wordlists - ideal for first time use getting it working
 var WordsDefault = map[string]map[string]string{

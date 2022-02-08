@@ -159,6 +159,7 @@ func hangman_dayword(date time.Time) int {
 	return int(math.Floor(days_between_dates))
 }
 
+// Loads data from a local or cloud-hosted csv
 func readCsvFile(source string, filePath string) [][]string {
 
 	var csvReader *csv.Reader
@@ -183,7 +184,6 @@ func readCsvFile(source string, filePath string) [][]string {
 		csvReader = csv.NewReader(f.Body)
 	}
 
-	// var records [][]string
 	records, err := csvReader.ReadAll()
 	if err != nil {
 		log.Fatal("Unable to parse file as CSV for "+filePath, err)
