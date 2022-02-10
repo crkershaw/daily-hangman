@@ -4,8 +4,11 @@ go 1.17
 
 replace github.com/crkershaw/hangman/configs => ../../configs
 
+replace github.com/crkershaw/hangman/controllers/db => ../db
+
 require (
 	github.com/crkershaw/hangman/configs v0.0.0-00010101000000-000000000000
+	github.com/crkershaw/hangman/controllers/db v0.0.0-00010101000000-000000000000
 	github.com/gin-gonic/gin v1.7.7
 )
 
@@ -14,6 +17,7 @@ require (
 	github.com/go-playground/locales v0.13.0 // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
+	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang/protobuf v1.3.3 // indirect
 	github.com/json-iterator/go v1.1.9 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect

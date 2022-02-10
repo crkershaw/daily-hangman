@@ -2,3 +2,5 @@
 *.exe
 env-vars.txt
 wordlist/wordlist_custom.csv
+env-vars.json
+controllers/db/db_addwords_custom.sql

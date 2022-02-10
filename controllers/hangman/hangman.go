@@ -12,6 +12,7 @@ import (
 	"time"
 
 	config "github.com/crkershaw/hangman/configs"
+	db "github.com/crkershaw/hangman/controllers/db"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,14 +31,33 @@ func hangman_page(c *gin.Context) {
 	c.HTML(http.StatusOK, "hangman.html", []string{})
 }
 
-// Returns all words for chosen ID from csv file
+func hangman_getwords_db(wordlist_id string) map[string]map[string]string {
+
+	wordlist, _ := db.Get_wordlist_fromdb(wordlist_id) // Update to catch error
+	var wordlist_deref = *wordlist
+
+	wordlist_newformat := map[string]map[string]string{}
+
+	for key, item := range wordlist_deref.Wordlist {
+
+		wordlist_newformat[key] = map[string]string{
+			"word":    item.Word,
+			"message": item.Message,
+		}
+	}
+
+	return wordlist_newformat
+
+}
+
+// Returns dictionary of all words for chosen ID from csv file
 func hangman_getwords(wordlist_id string) map[string]map[string]string {
 
 	var records [][]string
 
 	if config.ConfigSource == "s3" {
-		records = readCsvFile("s3", os.Getenv("s3-file-url"))
-	} else {
+		records = readCsvFile("s3", os.Getenv("S3_FILE_URL"))
+	} else if config.ConfigSource == "csv" {
 		records = readCsvFile("local", "wordlist/wordlist_custom.csv")
 	}
 
@@ -85,6 +105,8 @@ func hangman_getwordmessage(wordlist_id string, day int) (string, string) {
 		wordlist = config.WordLists["default"]
 	} else if config.ConfigSource == "csv" || config.ConfigSource == "s3" {
 		wordlist = hangman_getwords(wordlist_id)
+	} else if config.ConfigSource == "db" {
+		wordlist = hangman_getwords_db(wordlist_id)
 	}
 
 	day_str := strconv.Itoa(hangman_dayword(time.Now()))

@@ -1,14 +1,14 @@
 package main
 
 import (
-	"bufio"
+	"encoding/json"
+	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 
-	config "github.com/crkershaw/hangman/configs"
+	db "github.com/crkershaw/hangman/controllers/db"
 	"github.com/crkershaw/hangman/controllers/hangman"
 )
 
@@ -22,24 +22,9 @@ func fileExists(filename string) bool {
 
 func main() {
 
-	// Adding S3 bucket to environment variables
-	// Note S3 bucket url is not added to Github - if using with your own data, change ConfigSource variable in configs/config.go
-	if config.ConfigSource == "s3" && fileExists("env-vars.txt") {
-		file, err := os.Open("env-vars.txt")
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer file.Close()
-
-		scanner := bufio.NewScanner(file)
-
-		for scanner.Scan() {
-			os.Setenv("s3-file-url", scanner.Text())
-		}
-
-		if err := scanner.Err(); err != nil {
-			log.Fatal(err)
-		}
+	if fileExists("env-vars.json") {
+		set_os_vars("env-vars.json")
+		db.Database()
 	}
 
 	router := gin.Default()
@@ -57,6 +42,36 @@ func main() {
 	log.Fatal(router.Run())
 }
 
-func homepage(c *gin.Context) {
-	c.HTML(http.StatusOK, "homepage.html", []string{})
+// Adding S3 bucket url and database access details to environment variables
+// Note these are not added to Github - if using with your own data, change ConfigSource variable in configs/config.go
+
+type Os_Vars struct {
+	S3_FILE_URL string `json:"S3_FILE_URL"`
+	DBUSER      string `json:"DBUSER"`
+	DBPASS      string `json:"DBPASS"`
+	DBADDRESS   string `json:"DBADDRESS"`
+}
+
+func set_os_vars(config_file_path string) {
+
+	jsonFile, err := os.Open(config_file_path)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer jsonFile.Close()
+
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+
+	var osvars Os_Vars
+
+	// Unmarshalling byteArray containing the jsonFile's content into 'osvars'
+	json.Unmarshal(byteValue, &osvars)
+
+	os.Setenv("S3_FILE_URL", osvars.S3_FILE_URL)
+	os.Setenv("DBUSER", osvars.DBUSER)
+	os.Setenv("DBPASS", osvars.DBPASS)
+	os.Setenv("DBADDRESS", osvars.DBADDRESS)
+
 }

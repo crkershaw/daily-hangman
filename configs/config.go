@@ -9,8 +9,8 @@ import (
 // hardcoded: from the WordsDefault dictionary below - recommended for first time running locally
 // csv: from the csv file wordlist/wordlist_default
 // s3: from the csv file in the s3 bucket defined in the environment variable set in env-vars.txt (not committed to Github)
-var ConfigSources = [3]string{"csv", "hardcoded", "s3"}
-var ConfigSource string = ConfigSources[2]
+var ConfigSources = [4]string{"csv", "hardcoded", "s3", "db"}
+var ConfigSource string = ConfigSources[3]
 
 // Dates: BaseDate is the date the word of day number '0' appears on
 // So if it is two days after the BaseDate, the user will be shown word '2'
