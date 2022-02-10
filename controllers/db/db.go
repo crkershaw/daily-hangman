@@ -42,6 +42,7 @@ type Wordlists struct {
 
 func Database() {
 
+	fmt.Println("Connecting to database...")
 	// Capture connection properties
 	cfg := mysql.Config{
 		User:                 os.Getenv("DBUSER"),
@@ -105,9 +106,6 @@ func Get_wordlist_fromdb(wordlist_name string) (*Wordlist, error) {
 		// = Wordlist{Wordlist: map[string]WordDetail{
 		// 	strconv.Itoa(item.Word_num): word_detail}}
 	}
-
-	fmt.Println("Word list returned from database:")
-	fmt.Println(wordlist)
 
 	return &wordlist, nil
 

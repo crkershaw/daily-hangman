@@ -168,7 +168,6 @@ func hangman_api_lettercheck(c *gin.Context) {
 // May want to require the word in the request
 func hangman_api_message(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println(id)
 
 	_, message := hangman_getwordmessage(id, hangman_dayword(time.Now()))
 	c.IndentedJSON(http.StatusOK, message)

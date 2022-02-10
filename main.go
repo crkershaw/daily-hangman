@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	config "github.com/crkershaw/hangman/configs"
 	db "github.com/crkershaw/hangman/controllers/db"
 	"github.com/crkershaw/hangman/controllers/hangman"
 )
@@ -22,8 +23,11 @@ func fileExists(filename string) bool {
 
 func main() {
 
-	if fileExists("env-vars.json") {
-		set_os_vars("env-vars.json")
+	if fileExists("public/env-vars.json") {
+		set_os_vars("public/env-vars.json")
+	}
+
+	if config.ConfigSource == "db" {
 		db.Database()
 	}
 
