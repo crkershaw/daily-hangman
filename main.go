@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	config "github.com/crkershaw/hangman/configs"
+	addwords "github.com/crkershaw/hangman/controllers/addwords"
 	db "github.com/crkershaw/hangman/controllers/db"
 	"github.com/crkershaw/hangman/controllers/hangman"
 )
@@ -39,7 +40,8 @@ func main() {
 
 	router.LoadHTMLGlob("templates/*")
 
-	hangman.Routes(router) // Loading the routes from the hangman module
+	hangman.Routes(router)  // Loading the routes from the hangman module
+	addwords.Routes(router) // Loading the routes from the addwords module
 
 	router.Run(":80")
 

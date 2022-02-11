@@ -5,7 +5,7 @@ footer,
 
 
 * {
-    font-family: "Open sans", Helvetica, Arial, sans-serif;
+    font-family: "Roboto", "Open sans", Helvetica, Arial, sans-serif;
 }
 
 /* Whole site */
@@ -145,4 +145,70 @@ Keyboard        (50vh)
 
 .finishbox.hidden {
     display: none;
+}
+
+
+/* Addword */
+
+.addWords {
+    width: 90%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.addword_box {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5vw;
+    margin-bottom: 0.5vw;
+
+    border-radius: 3vw;
+
+    background-color: white;
+
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.addword_box.large { 
+    height: 5vw;
+    line-height: 5vw;
+    width: 70%;
+}
+
+.addword_box.small {
+    height:3vw;
+    line-height: 1.5vw;
+    width:90%;
+    overflow: hidden;
+}
+
+.addword_cursor {
+    width: calc(100% - 3vw); /* Indenting for the border radius of the container */
+    border: none;
+    outline: none;
+    margin-left: auto;
+    margin-right: auto;
+
+
+    color: #00000085;
+    text-align: center;
+
+}
+
+.addword_cursor.large {
+    height: 4vw;
+    font-size: 4vw;
+    font-weight: 300;
+    text-transform: uppercase; 
+}
+
+.addword_cursor.small{
+    height: 2vw;
+    font-size: 1.5vw;
+    font-weight: 300;
 }
