@@ -40,6 +40,9 @@ You must change:
 
 ### Running locally
 You can run locally by running the main.go file
+```
+go run main.go
+```
 
 ### Running on docker
 You can run through docker by cd-ing to the main folder, then running:
