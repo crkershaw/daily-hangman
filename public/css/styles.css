@@ -150,22 +150,37 @@ Keyboard        (50vh)
 
 /* Addword */
 
+.card {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 1px 1px 0 rgb(66 66 66 / 8%), 0 1px 3px 1px rgb(66 66 66 / 16%);
+    z-index: 1;
+}
+
+.addwords_container {
+    width: 100%;
+    padding-left: 2vw;
+    padding-right: 2vw;
+}
+
+
 .addWords {
     width: 90%;
+
     text-align: center;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 1vw;
     display: flex;
     flex-direction: column;
+
 }
 
 .addword_box {
-    margin-left: auto;
-    margin-right: auto;
     margin-top: 0.5vw;
-    margin-bottom: 0.5vw;
 
-    border-radius: 3vw;
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
 
     background-color: white;
 
@@ -177,13 +192,15 @@ Keyboard        (50vh)
 .addword_box.large { 
     height: 5vw;
     line-height: 5vw;
-    width: 70%;
+
+    border-bottom-style: solid;
+    border-bottom-color: grey;
+    border-bottom-width: 1px;
 }
 
 .addword_box.small {
     height:3vw;
     line-height: 1.5vw;
-    width:90%;
     overflow: hidden;
 }
 
@@ -194,9 +211,7 @@ Keyboard        (50vh)
     margin-left: auto;
     margin-right: auto;
 
-
     color: #00000085;
-    text-align: center;
 
 }
 
@@ -204,7 +219,6 @@ Keyboard        (50vh)
     height: 4vw;
     font-size: 4vw;
     font-weight: 300;
-    text-transform: uppercase; 
 }
 
 .addword_cursor.small{
@@ -212,3 +226,25 @@ Keyboard        (50vh)
     font-size: 1.5vw;
     font-weight: 300;
 }
+
+.addanother {
+    width: 50%;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
+
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+
+    font-size: 1.5vw;
+    font-weight: 300;
+    /* height: 2vw; */
+
+    text-align: center;
+    color: #00000085;
+
+    cursor: pointer;
+    
+
+}
+

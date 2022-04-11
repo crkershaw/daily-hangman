@@ -2,12 +2,45 @@
 
 var e = React.createElement;
 
+class Addwords_container extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            wordlist: {
+                0: {"word": "brooklyn", "message": "Cooking raw with the brooklyn boy"},
+                1: {"word": "desk", "message": "Dele Eriksen Son Kane"}
+            }
+        }
+    }
+
+    render(){
+
+        var words_cards = []
+
+        for(const [key, value] of Object.entries(this.state.wordlist)){
+            var card_num = key
+            var card_word = value["word"]
+            var card_message = value["message"]
+            
+            words_cards.push(e(Addwords, {num: card_num, word: card_word, message: card_message}))
+        }
+
+        return e(
+            "div",
+            {className: "addwords_container"},
+            [
+                words_cards,
+                e(Addanother, {})
+            ]
+        )
+    }
+}
+
 class Addwords extends React.Component{
     
     constructor(props){
         super(props)
         this.state = {}
-
 
     }
 
@@ -16,10 +49,10 @@ class Addwords extends React.Component{
         
         return e(
             "div",
-            {className: "addwords"},
+            {className: "addwords card"},
             [
-                e(Addword, {}),
-                e(Addmessage, {})
+                e(Addword, {word: this.props.word}),
+                e(Addmessage, {message: this.props.message})
             ]
         )
     }
@@ -32,7 +65,7 @@ class Addword extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            value: ""
+            value: this.props.word
         }
     }
 
@@ -50,7 +83,7 @@ class Addword extends React.Component{
             {className: "addword_box large"},
             e(
                 "input",
-                {type: "text", className: "addword_cursor large", placeholder: "Word", value: this.state.value, onChange: this.handleKeyPress}
+                {type: "text", className: "addword_cursor large", placeholder: "Enter word here", value: this.state.value, onChange: this.handleKeyPress}
             )
         )
     }
@@ -61,7 +94,7 @@ class Addmessage extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            value: ""
+            value: this.props.message
         }
     }
 
@@ -75,11 +108,27 @@ class Addmessage extends React.Component{
             {className: "addword_box small"},
             e(
                 "input",
-                {type: "text", className: "addword_cursor small", placeholder: "Message to display on completion", value: this.state.value, onChange: this.handleKeyPress}
+                {type: "text", className: "addword_cursor small", placeholder: "Enter message to display on completion here", value: this.state.value, onChange: this.handleKeyPress}
             )
         )
     }
 }
 
-const addwords = document.querySelector('#addwords');
-ReactDOM.render(e(Addwords, {}), addwords);
+class Addanother extends React.Component {
+
+    constructor(props){
+        super(props)
+        this.state = {}
+    }
+
+    render() {
+        return e(
+            "div",
+            {className: "addanother card"},
+            " + Click to add another"
+        )
+    }
+}
+
+const addwords_container = document.querySelector('#addwords_container');
+ReactDOM.render(e(Addwords_container, {}), addwords_container);
