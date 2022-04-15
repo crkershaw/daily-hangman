@@ -111,8 +111,27 @@ func hangman_getwordmessage(wordlist_id string, day int) (string, string) {
 
 	day_str := strconv.Itoa(hangman_dayword(time.Now()))
 
-	word := wordlist[day_str]["word"]
-	message := wordlist[day_str]["message"]
+	// If the day is past the max date a word is set for, it loops back around to pick an old word
+
+	max_num := 0
+	for k := range wordlist {
+		fmt.Println(k)
+		keynum, _ := strconv.Atoi(k)
+		if keynum > max_num {
+			max_num = keynum
+		}
+	}
+
+	day_int, _ := strconv.Atoi(day_str)
+
+	new_index := strconv.Itoa(day_int % max_num)
+
+	if new_index == "0" {
+		new_index = strconv.Itoa(max_num)
+	}
+
+	word := wordlist[new_index]["word"]
+	message := wordlist[new_index]["message"]
 
 	return word, message
 }
@@ -176,6 +195,8 @@ func hangman_api_message(c *gin.Context) {
 // Returns the 'day' that we are on, vs the base date, to be used to pick which word to give
 func hangman_dayword(date time.Time) int {
 	days_between_dates := date.Sub(config.BaseDate).Hours() / 24
+	fmt.Println("Day: ")
+	fmt.Println(math.Floor(days_between_dates))
 	// days_between_dates := 3 // Used for debugging - change to check a certain word
 	return int(math.Floor(days_between_dates))
 }
