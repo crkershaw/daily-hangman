@@ -4,13 +4,41 @@ var e = React.createElement;
 
 class Addwords_container extends React.Component {
     constructor(props){
-        super(props)
+        super(props);
         this.state = {
             wordlist: {
                 0: {"word": "brooklyn", "message": "Cooking raw with the brooklyn boy"},
                 1: {"word": "desk", "message": "Dele Eriksen Son Kane"}
             }
+        };
+    }
+
+
+    addToWordlist = (id, word, message) => {
+        // Create an object of the new wordlist
+
+        var wordlist_toadd = {}
+        var max = 0
+
+        for(let i in this.state.wordlist){
+           if(i > max){
+               max = i
+           } 
         }
+
+        wordlist_toadd = {...wordlist_toadd , [parseInt(max, 10) + 1]: {"word": word, "message": message}}
+        
+        // Combine that object with the existing state object (note: can't change state in-place)
+        const wordlist_new = {...this.state.wordlist, ...wordlist_toadd}
+        this.setState({wordlist: wordlist_new})
+
+        console.log(this.state.wordlist);
+
+    }
+
+    submitWordList = () => {
+        console.log('Submitted word list')
+        console.log(this.state.wordlist)
     }
 
     render(){
@@ -30,8 +58,10 @@ class Addwords_container extends React.Component {
             {className: "addwords_container"},
             [
                 words_cards,
-                e(Addanother, {})
-            ]
+                e(Addanother, 
+                    {onHandleClick: this.addToWordlist}
+                )
+           ]
         )
     }
 }
@@ -119,12 +149,19 @@ class Addanother extends React.Component {
     constructor(props){
         super(props)
         this.state = {}
+        this.handleClick = this.handleClick.bind(this)
+    }
+
+    handleClick = () => {
+        this.props.onHandleClick("", "")
+        console.log("Click happened");
+
     }
 
     render() {
         return e(
             "div",
-            {className: "addanother card"},
+            {className: "addanother card", onClick: this.handleClick},
             " + Click to add another"
         )
     }
