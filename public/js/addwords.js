@@ -13,30 +13,22 @@ class Addwords_container extends React.Component {
         };
     }
 
-
     addToWordlist = (id, word, message) => {
+
         // Create an object of the new wordlist
-
         var wordlist_toadd = {}
-        var max = 0
 
-        for(let i in this.state.wordlist){
-           if(i > max){
-               max = i
-           } 
-        }
-
-        wordlist_toadd = {...wordlist_toadd , [parseInt(max, 10) + 1]: {"word": word, "message": message}}
+        wordlist_toadd = {...wordlist_toadd , [id]: {"word": word, "message": message}}
         
         // Combine that object with the existing state object (note: can't change state in-place)
         const wordlist_new = {...this.state.wordlist, ...wordlist_toadd}
+
         this.setState({wordlist: wordlist_new})
 
-        console.log(this.state.wordlist);
 
     }
 
-    submitWordList = () => {
+    submitWordlist = () => {
         console.log('Submitted word list')
         console.log(this.state.wordlist)
     }
@@ -50,7 +42,13 @@ class Addwords_container extends React.Component {
             var card_word = value["word"]
             var card_message = value["message"]
             
-            words_cards.push(e(Addwords, {num: card_num, word: card_word, message: card_message}))
+            words_cards.push(e(Addwords, 
+                {
+                    num: card_num, 
+                    word: card_word, 
+                    message: card_message,
+                    onHandleInput: this.addToWordlist
+                }))
         }
 
         return e(
@@ -59,9 +57,13 @@ class Addwords_container extends React.Component {
             [
                 words_cards,
                 e(Addanother, 
-                    {onHandleClick: this.addToWordlist}
+                    {onHandleClick: this.addToWordlist,
+                    wordlist: this.state.wordlist}
+                ),
+                e(Submit, 
+                    {onHandleClick: this.submitWordlist}
                 )
-           ]
+            ]
         )
     }
 }
@@ -70,10 +72,23 @@ class Addwords extends React.Component{
     
     constructor(props){
         super(props)
-        this.state = {}
-
+        this.state = {
+            word: this.props.word,
+            message: this.props.message     
+        }
     }
 
+    // handleInput = (word, message) => {
+    //     this.props.onHandleInput(this.props.id, word, message)
+    // }
+    handleInput = (type, text) => {
+        if(type == "word"){
+            this.setState({word: text}, () => {this.props.onHandleInput(this.props.num, this.state.word, this.state.message)})
+
+        } else {
+            this.setState({message: text}, () => {this.props.onHandleInput(this.props.num, this.state.word, this.state.message)})
+        }
+    }
 
     render () {
         
@@ -81,15 +96,13 @@ class Addwords extends React.Component{
             "div",
             {className: "addwords card"},
             [
-                e(Addword, {word: this.props.word}),
-                e(Addmessage, {message: this.props.message})
+                e(Addword, {word: this.props.word, onHandleInput: this.handleInput}),
+                e(Addmessage, {message: this.props.message, onHandleInput: this.handleInput})
             ]
         )
     }
 }
-
-
-
+        
 class Addword extends React.Component{
 
     constructor(props){
@@ -98,12 +111,11 @@ class Addword extends React.Component{
             value: this.props.word
         }
     }
-
+    
     handleKeyPress = (e) => {
-
         const re = /^[A-Za-z]+$/;
         if (e.target.value === "" || re.test(e.target.value)){
-          this.setState({ value: e.target.value });
+          this.setState({ value: e.target.value }, () => {this.props.onHandleInput("word", this.state.value)})
         }
     }
 
@@ -113,7 +125,11 @@ class Addword extends React.Component{
             {className: "addword_box large"},
             e(
                 "input",
-                {type: "text", className: "addword_cursor large", placeholder: "Enter word here", value: this.state.value, onChange: this.handleKeyPress}
+                {type: "text", 
+                className: "addword_cursor large", 
+                placeholder: "Enter word here", 
+                value: this.state.value, 
+                onChange: this.handleKeyPress}
             )
         )
     }
@@ -129,7 +145,7 @@ class Addmessage extends React.Component{
     }
 
     handleKeyPress = (e) => {
-        this.setState({ value: e.target.value });
+        this.setState({ value: e.target.value }, () => {this.props.onHandleInput("message", this.state.value)});
     }
 
     render() {
@@ -138,10 +154,15 @@ class Addmessage extends React.Component{
             {className: "addword_box small"},
             e(
                 "input",
-                {type: "text", className: "addword_cursor small", placeholder: "Enter message to display on completion here", value: this.state.value, onChange: this.handleKeyPress}
+                {type: "text", 
+                className: "addword_cursor small", 
+                placeholder: "Enter message to display on completion here", 
+                value: this.state.value, 
+                onChange: this.handleKeyPress}
             )
         )
     }
+
 }
 
 class Addanother extends React.Component {
@@ -153,8 +174,14 @@ class Addanother extends React.Component {
     }
 
     handleClick = () => {
-        this.props.onHandleClick("", "")
-        console.log("Click happened");
+        var max = 0
+
+        for(let i in this.props.wordlist){
+           if(i > max){
+               max = i
+           } 
+        }
+        this.props.onHandleClick(parseInt(max) + 1, "", "")
 
     }
 
@@ -163,6 +190,27 @@ class Addanother extends React.Component {
             "div",
             {className: "addanother card", onClick: this.handleClick},
             " + Click to add another"
+        )
+    }
+}
+
+class Submit extends React.Component {
+
+    constructor(props){
+        super(props)
+        this.state = {}
+        this.handleClick = this.handleClick.bind(this)
+    }
+
+    handleClick = () => {
+        this.props.onHandleClick()
+    }
+
+    render() {
+        return e(
+            "div",
+            {className: "submit card", onClick: this.handleClick},
+            "Click to submit words and messages"
         )
     }
 }
