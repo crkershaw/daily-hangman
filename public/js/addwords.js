@@ -29,9 +29,19 @@ class Addwords_container extends React.Component {
     }
 
     submitWordlist = () => {
-        console.log('Submitted word list')
-        console.log(this.state.wordlist)
+
+        var new_words = {}
+        
+        var num = 0
+
+        for(let i in this.state.wordlist){
+            if(this.state.wordlist[i]["word"] != ""){
+                new_words[num] = {"word": this.state.wordlist[i]["word"], "message": this.state.wordlist[i]["message"]}    
+                num += 1
+            }
+        }
     }
+
 
     render(){
 
@@ -78,9 +88,6 @@ class Addwords extends React.Component{
         }
     }
 
-    // handleInput = (word, message) => {
-    //     this.props.onHandleInput(this.props.id, word, message)
-    // }
     handleInput = (type, text) => {
         if(type == "word"){
             this.setState({word: text}, () => {this.props.onHandleInput(this.props.num, this.state.word, this.state.message)})
